@@ -1,12 +1,12 @@
-import uuid
 import datetime
+import uuid
 
 from app.main import db
 from app.main.model.user import User
 
 
 def save_new_user(data):
-    user = User.query.filter_by(email=data['email']).first()
+    user = User.query.filter((User.email == data['email']) or (User.username == data['username'])).first()
     if not user:
         new_user = User(
             public_id=str(uuid.uuid4()),
@@ -54,4 +54,3 @@ def generate_token(user):
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
-

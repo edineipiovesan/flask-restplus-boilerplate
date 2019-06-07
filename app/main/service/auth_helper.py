@@ -86,3 +86,13 @@ class Auth:
                 'message': 'Provide a valid auth token.'
             }
             return response_object, 401
+
+    @staticmethod
+    def token_has_prefix(token, prefix='Bearer '):
+        # type: (str, str) -> bool
+        return str(token).startswith(prefix)
+
+    @staticmethod
+    def remove_token_prefix(token, prefix='Bearer '):
+        # type: (str, str) -> str
+        return token[len(prefix):]

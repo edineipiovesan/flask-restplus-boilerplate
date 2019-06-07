@@ -1,7 +1,14 @@
 import os
 
-# uncomment the line below for postgres database url from environment variable
-# postgres_local_base = os.environ['DATABASE_URL']
+POSTGRES = {
+    'user': 'pg-user',
+    'pw': 'pg-pass',
+    'db': 'pg-db',
+    'host': 'localhost',
+    'port': '5432',
+}
+
+DB_URL = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,14 +19,18 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    # uncomment the line below to use postgres
-    # SQLALCHEMY_DATABASE_URI = postgres_local_base
+    def __init__(self):
+        pass
+
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'flask_boilerplate_main.db')
+    SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class TestingConfig(Config):
+    def __init__(self):
+        pass
+
     DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'flask_boilerplate_test.db')
@@ -28,9 +39,11 @@ class TestingConfig(Config):
 
 
 class ProductionConfig(Config):
+    def __init__(self):
+        pass
+
     DEBUG = False
-    # uncomment the line below to use postgres
-    # SQLALCHEMY_DATABASE_URI = postgres_local_base
+    SQLALCHEMY_DATABASE_URI = DB_URL
 
 
 config_by_name = dict(

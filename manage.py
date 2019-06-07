@@ -9,6 +9,7 @@ from app.main import create_app, db
 from app.main.model import user, blacklist
 
 app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
+app.url_map.strict_slashes = False
 app.register_blueprint(blueprint)
 
 app.app_context().push()
@@ -17,7 +18,7 @@ manager = Manager(app)
 
 migrate = Migrate(app, db)
 
-manager.add_command('db', MigrateCommand)
+manager.add_command(db, MigrateCommand)
 
 
 @manager.command
@@ -33,6 +34,7 @@ def test():
     if result.wasSuccessful():
         return 0
     return 1
+
 
 if __name__ == '__main__':
     manager.run()
